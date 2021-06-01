@@ -1,6 +1,7 @@
 # pip install fastapi, uvicorn
 
-
+# start:
+# uvicorn app:app --reload
 
 # minimal ---------------------------
 
