@@ -3,6 +3,9 @@
 # start:
 # uvicorn app:app --reload
 
+# docs:
+# localhost:8000/docs
+
 # minimal ---------------------------
 
 from fastapi import FastAPI
@@ -33,7 +36,8 @@ def read_hdl(request : Request):
     return templates.TemplateResponse("UploadHDL.html", {"request": request})
   
   
- #   upload files (Excel) --------------------------------------
+# upload files (Excel) --------------------------------------
+# pip install python-multipart
   
  ...
 
@@ -42,3 +46,23 @@ def create_upload_file(file: bytes = File(...)):
       
     snapshot_file = BytesIO(file).read() # read file and convert to pandas dataframe
     workbook = pd.ExcelFile(snapshot_file)
+    
+# upload files (text) --------------------------------------
+# pip install python-multipart
+
+
+
+...
+
+from fastapi import FastAPI, UploadFile, File
+import json
+
+...
+
+@app.post("/upload_snapshot")
+async def create_upload_file(file: UploadFile = File(...)):
+    txt = await file.read()
+    MVP(json.loads(txt))
+    return {"filename": file.filename}
+
+
